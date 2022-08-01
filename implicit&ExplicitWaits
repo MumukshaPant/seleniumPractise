@@ -1,0 +1,75 @@
+import java.lang.reflect.Array;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+import org.openqa.selenium.Webdriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.testng.Assert;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import java.util.*;
+
+public class addToCart {
+
+	public static void main(String[] args) throws InterruptedException {
+
+		System.setProperty("webdriver.chrome.driver","/home/blu-smart/Desktop/RahulShettyMP/chromedriver_linux64/chromedriver");
+		WebDriver driver = new ChromeDriver();
+		driver.get("https://rahulshettyacademy.com/seleniumPractise/#/");
+		
+	//Explicit Wait 
+		WebDriverWait w =new WebDriverWait(driver,5);		
+		w.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input.promoCode")));
+		
+		
+		String [] itemsReqd = {"Beetroot - 1 Kg" ,"Carrot - 1 Kg"};
+
+	addItems(driver, itemsReqd);
+
+driver.findElement(By.className("cart-icon")).click();
+Thread.sleep(2000);
+driver.findElement(By.xpath("//button[text()='PROCEED TO CHECKOUT']" )).click();
+Thread.sleep(2000);
+
+driver.findElement(By.xpath("//input[@placeholder='Enter promo code']")).sendKeys("rahulshettyacademy");
+
+driver.findElement(By.className("promoBtn")).click();
+	}
+		
+		
+		public static  void addItems(WebDriver driver, String[] itemsReqd) throws InterruptedException
+		{
+			
+			List<WebElement> veggies = driver.findElements(By.cssSelector("h4.product-name"));
+			
+				
+			int i;
+			for(i=0;i<veggies.size();i++)
+			{
+				String name=veggies.get(i).getText();
+	            // Now we have to convert the Array itemsReqd into an  ARRAY LIST 
+				//array saves memory but array list is used for faster processing 
+				//then check if the VEGGIE is there in ARRAY LIST 
+				
+				List itemsList= Arrays.asList(itemsReqd);
+				
+				
+				if(itemsList.contains(name))
+			{	
+				driver.findElements(By.xpath("//button[text()='ADD TO CART']")).get(i).click();    
+				Thread.sleep(2000);
+
+			}
+			
+								
+			}
+			
+	     }		
+		
+
+		
+		
+	} 
